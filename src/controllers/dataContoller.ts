@@ -1,11 +1,12 @@
 import express, { IRouter, Request, Response } from "express";
+import { AddUser, allUsers } from "../services/dataService";
 
 const router: IRouter = express.Router();
 
 router.get("/", async (req: Request, res: Response): Promise<void> => {
   try {
-    // await
-    res.send("GET method Successfully");
+    const all= await allUsers()
+    res.json(all);
   } catch (error: any) {
     console.error(error.message);
   }
@@ -21,7 +22,9 @@ router.get("/:id", async (req: Request, res: Response): Promise<void> => {
 
 router.post("/", async (req: Request, res: Response): Promise<void> => {
   try{
-    res.send("POST method Successfully");
+    const newUser = req.body
+    const addUser = AddUser(newUser)
+    res.send(addUser);
   } catch (error: any) {
     console.error(error.message);
   }
@@ -49,14 +52,5 @@ export default router;
 
 
 
-// try {
-//     const { name, email, age } = req.body;
 
-//     const newUser: IUser = new User({
-//       name,
-//       email,
-//       age,
-//     });
-
-//     const user = await newUser.save();
     

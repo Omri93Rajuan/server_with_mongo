@@ -8,17 +8,10 @@ const app:Express = express()
 app.use(express.json());
 app.use(router)
 
+mongoose.connect(process.env.MONGO_URI || "")
+.then(()=>console.log("Connected to MongoDB Atlas"))
+.catch((error) => console.error("Error connecting to MongoDB:", error));
   
-  app.use(express.json());
-  app.use("/api", router);
-  
-
 app.listen(process.env.PORT || 8000, ()=>{
     console.log(`listening on: http://localhost:${process.env.PORT || 8000}`);   
 })
-
-
-
-// mongoose.connect(process.env.MONGO_URI || "")
-//   .then(() => console.log("Connected to MongoDB Atlas"))
-//   .catch((error) => console.error("Error connecting to MongoDB:", error));
