@@ -3,7 +3,7 @@ import Miki, { IUser } from "../models/user";
 
 const allUsers = async () =>{
     try {
-        const allUsers = Miki.find()
+        const allUsers = await Miki.find()
         return allUsers;  
     } catch (error) {
         throw new Error("Failed to find all users new user");
