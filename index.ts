@@ -3,8 +3,16 @@ import "dotenv/config";
 import router from './router/router';
 import mongoose from 'mongoose';
 import cookieParser from 'cookie-parser';
+import cors from "cors"
 
 const app:Express = express()
+
+
+app.use(cors({
+    origin: "http://localhost:5173",
+    credentials: true  
+}));
+
 
 app.use(express.json());
 app.use(cookieParser())
