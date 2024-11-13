@@ -4,14 +4,16 @@ import router from './router/router';
 import mongoose from 'mongoose';
 import cookieParser from 'cookie-parser';
 import cors from "cors"
+import loadInitialData from './src/initailData';
 
 const app:Express = express()
 
+loadInitialData().catch(console.error);
 
 app.use(cors({
     origin: "http://localhost:5173",
     credentials: true  
-}));
+})); 
 
 
 app.use(express.json());
