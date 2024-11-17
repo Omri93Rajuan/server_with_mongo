@@ -4,6 +4,7 @@ import router from './router/router';
 import mongoose from 'mongoose';
 import cookieParser from 'cookie-parser';
 import cors from "cors"
+import chalk from "chalk";
 
 const app:Express = express()
 

@@ -2,6 +2,7 @@ import { CookieOptions, Response } from "express";
 import { comparePassword } from "../../helpers/bcrypt"
 import { generateAuthToken } from "../../helpers/jwt"
 import Miki from "../models/user"
+import { handleBadRequest } from "../../utils/ErrorHandle";
 
 const cookieConfig: CookieOptions = {
     httpOnly: true,          // הגנה מפני XSS - הקוקי לא נגיש דרך JavaScript בצד הלקוח
@@ -18,25 +19,37 @@ interface LoginDTO{
       isAdmin: boolean 
 }
 
-const login = async (user: userDTO, res:Response) => {
+const login = async (user: userDTO, res: Response) => {
     try {
-        const foundUser = await Miki.findOne({ email: user.email })
-        
-        if (!foundUser) return  console.log ("User not found")
-        const isPasswordCorrect = await comparePassword(user.password, foundUser.password)
-        if (!isPasswordCorrect) return console.log("Incorrect password or Email");
+        if (!user?.email || !user?.password) {
+            throw new Error("Missing required fields");
+        }
 
-        const {_id,isAdmin} = foundUser
-        const token = generateAuthToken({_id,isAdmin});
+        const foundUser = await Miki.findOne({ email: user.email });
+        if (!foundUser) {
+            throw new Error("Could not find this user in the database");
+        }
+
+        const isPasswordCorrect = await comparePassword(user.password, foundUser.password);
+        if (!isPasswordCorrect) {
+            throw new Error("Incorrect password or Email");
+        }
+
+        const { _id, isAdmin } = foundUser;
+        let token = generateAuthToken({ _id, isAdmin });
+
+        if (!cookieConfig) {
+            throw new Error("Cookie configuration is missing");
+        }
+
         res.cookie('auth_token', token, cookieConfig);
+        return { foundUser, token };
 
-        return {foundUser , token};
-
-    } catch (error) {
-        throw new Error("Failed to login")
-    }
+    } catch (error: any) {
+        error.status = 404;
+        return handleBadRequest("MongoDB", error); 
+};
 }
-
 
 const logout = (res: Response): void => {
     try {
