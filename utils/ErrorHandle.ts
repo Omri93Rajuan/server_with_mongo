@@ -9,6 +9,7 @@ const handleError = (res: Response, status: number, message: string): Response =
   });
 };
 
+
 const handleBadRequest = async (validator: string, error: any) => {
   const errorMessage = `${validator} Error: ${error.message}`;
   const Error = {
