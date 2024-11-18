@@ -3,7 +3,6 @@ import { generateUserPassword } from "../../helpers/bcrypt";
 import User, { IUser } from "../models/user";
 import { handleBadRequest } from "../../utils/ErrorHandle";
 
-// Get all users
 const getAllUsers = async () => {
     try {
         const users = await User.find();
@@ -13,7 +12,6 @@ const getAllUsers = async () => {
     }
 };
 
-// Get user by ID
 const getUserById = async (userId: string) => {
     try {
         const user = await User.findById(userId);
@@ -26,7 +24,6 @@ const getUserById = async (userId: string) => {
     }
 };
 
-// Create new user
 const addUser = async (userData: IUser) => {
     try {
         if (!userData.email || !userData.password) {
@@ -42,10 +39,8 @@ const addUser = async (userData: IUser) => {
     }
 };
 
-// Update user
 const updateUser = async (userId: string, updateData: Partial<IUser>) => {
     try {
-        // בדיקה שלא מנסים לעדכן סיסמה
         if (updateData.password) {
             throw new Error("Password cannot be updated through this endpoint");
         }
@@ -73,7 +68,6 @@ const updateUser = async (userId: string, updateData: Partial<IUser>) => {
     }
 };
 
-// Delete user
 const deleteUser = async (userId: string) => {
     try {
         const deletedUser = await User.findByIdAndDelete(userId);
