@@ -13,7 +13,7 @@ const app: Express = express();
 loadInitialData().catch(console.error);
 
 app.use(cors({
-    origin: "*",
+    origin: "http://localhost:5173",
     credentials: true  
 })); 
 
@@ -24,7 +24,7 @@ app.use(router);
 // התחברות ל-MongoDB עם לוגים צבעוניים
 mongoose.connect(process.env.MONGO_URI || "")
   .then(() => {
-    console.log(chalk.cyanBright("Connected to MongoDB Atlas"));  // לוג ירוק כשמתחברים בהצלחה
+    console.log(chalk.cyanBright("Connected to MongoDB Atlas")); 
   })
   .catch((error) => {
     console.error(chalk.red("Error connecting to MongoDB:", error));  // לוג אדום כשיש שגיאה
