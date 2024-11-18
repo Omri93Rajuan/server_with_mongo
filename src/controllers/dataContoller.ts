@@ -10,7 +10,6 @@ import { handleError } from "../../utils/ErrorHandle";
 
 const router: IRouter = express.Router();
 
-// Get all users
 router.get("/", async (req: Request, res: Response): Promise<void> => {
     try {
         const users = await getAllUsers();
@@ -20,7 +19,6 @@ router.get("/", async (req: Request, res: Response): Promise<void> => {
     }
 });
 
-// Get user by ID
 router.get("/:id", async (req: Request, res: Response): Promise<void> => {
     try {
         const user = await getUserById(req.params.id);
@@ -30,7 +28,6 @@ router.get("/:id", async (req: Request, res: Response): Promise<void> => {
     }
 });
 
-// Create new user
 router.post("/", async (req: Request, res: Response): Promise<void> => {
     try {
         const user = await addUser(req.body);
@@ -40,7 +37,6 @@ router.post("/", async (req: Request, res: Response): Promise<void> => {
     }
 });
 
-// Update user
 router.patch("/:id", async (req: Request, res: Response): Promise<void> => {
     try {
         const updatedUser = await updateUser(req.params.id, req.body);
@@ -50,7 +46,6 @@ router.patch("/:id", async (req: Request, res: Response): Promise<void> => {
     }
 });
 
-// Delete user
 router.delete("/:id", async (req: Request, res: Response): Promise<void> => {
     try {
         const result = await deleteUser(req.params.id);

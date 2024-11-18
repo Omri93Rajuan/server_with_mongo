@@ -8,7 +8,6 @@ const cookieConfig: CookieOptions = {
     httpOnly: true,          // הגנה מפני XSS - הקוקי לא נגיש דרך JavaScript בצד הלקוח
     secure: true,            // שליחת הקוקי רק בחיבור HTTPS
     sameSite: 'strict',      // הגנה מפני CSRF
-    maxAge: 24 * 60 * 60 * 1000  // תוקף של יום אחד (במילישניות)
 };
 interface userDTO {
     email:string,

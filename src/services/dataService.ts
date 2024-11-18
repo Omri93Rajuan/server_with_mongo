@@ -79,7 +79,6 @@ const deleteUser = async (userId: string) => {
         return handleBadRequest("MongoDB", error);
     }
 };
-
 export {
     getAllUsers,
     getUserById,
