@@ -1,7 +1,7 @@
 import { CookieOptions, Response } from "express";
 import { comparePassword } from "../../helpers/bcrypt"
 import { generateAuthToken } from "../../helpers/jwt"
-import Miki from "../models/user"
+import Users from "../models/user"
 import { handleBadRequest } from "../../utils/ErrorHandle";
 
 const cookieConfig: CookieOptions = {
@@ -25,7 +25,7 @@ const login = async (user: userDTO, res: Response) => {
             throw new Error("Missing required fields");
         }
 
-        const foundUser = await Miki.findOne({ email: user.email });
+        const foundUser = await Users.findOne({ email: user.email });
         if (!foundUser) {
             throw new Error("Could not find this user in the database");
         }
@@ -51,15 +51,13 @@ const login = async (user: userDTO, res: Response) => {
 };
 }
 
-const logout = (res: Response): void => {
+const logout = (res: Response) => {
     try {
-        res.clearCookie("auth_token", {
-            httpOnly: true,
-            secure: true,
-            sameSite: "strict",
-        });
-            } catch (error) {
-console.log(error);
+        res.clearCookie('auth_token', cookieConfig);
+        console.log('User logged out and cookie cleared');
+    } catch (error: any) {
+        error.status = 500;  
+        return handleBadRequest("Logout Error", error);
     }
 };
 export {
